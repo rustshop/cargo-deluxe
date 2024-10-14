@@ -1,0 +1,11 @@
+[package]
+name = "bin-intercept"
+version = "0.1.0"
+edition = "2021"
+license = "MIT"
+
+
+[dependencies]
+thiserror = "1.0.64"
+tracing = "0.1.40"
+which = "6.0.3"

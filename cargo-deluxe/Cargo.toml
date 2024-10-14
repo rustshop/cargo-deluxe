@@ -1,0 +1,13 @@
+[package]
+name = "cargo-deluxe"
+version = { workspace = true }
+edition = "2021"
+license = "MIT"
+
+
+[dependencies]
+bin-intercept = { path = "../bin-intercept" }
+color-eyre = { version = "0.6.3", default-features = false }
+tracing = "0.1.40"
+tracing-subscriber = { version = "0.3.18", features = ["std", "env-filter"] }
+which = "6.0.3"

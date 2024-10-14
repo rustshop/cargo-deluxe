@@ -22,13 +22,15 @@
         flakeboxLib = flakebox.lib.${system} {
           config = {
             github.ci.buildOutputs = [ ".#ci.${projectName}" ];
+            toolchain.channel = "latest";
           };
         };
 
         buildPaths = [
           "Cargo.toml"
           "Cargo.lock"
-          "src"
+          "cargo-deluxe"
+          "bin-intercept"
         ];
 
         buildSrc = flakeboxLib.filterSubPaths {
@@ -52,11 +54,24 @@
           in
           {
             ${projectName} = craneLib.buildPackage { };
+
+            "cargo" = flakeboxLib.pickBinary {
+              pkg = craneLib.buildPackage { };
+              bin = "cargo";
+            };
+            "rustc" = flakeboxLib.pickBinary {
+              pkg = craneLib.buildPackage { };
+              bin = "rustc";
+            };
           }
         );
       in
       {
-        packages.default = multiBuild.${projectName};
+        packages = {
+          default = multiBuild.${projectName};
+          cargo = multiBuild.cargo;
+          rustc = multiBuild.rustc;
+        };
 
         legacyPackages = multiBuild;
 

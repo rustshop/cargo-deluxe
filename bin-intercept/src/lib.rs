@@ -11,11 +11,11 @@ const LOG_TARGET: &str = "bin-intercept";
 pub enum InterceptError {
     #[error("Base name missing in the current executed binary")]
     MissingBaseName,
-    #[error("Next bin to call not found")]
+    #[error("Next bin to call not found: {0}")]
     FindNextBin(FindNextBinError),
-    #[error("Could not call `which`")]
+    #[error("Could not call `which`: {0}")]
     Which(which::Error),
-    #[error("IO Error")]
+    #[error("IO Error: {0}")]
     IO(io::Error),
 }
 

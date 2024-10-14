@@ -8,7 +8,7 @@ use color_eyre::eyre::OptionExt;
 use color_eyre::Result;
 use tracing::{trace, warn};
 
-const LOG_TARGET: &str = "cargo-deluxe";
+const LOG_TARGET: &str = "cargo-deluxe::cargo";
 
 fn main() -> Result<()> {
     color_eyre::install()?;

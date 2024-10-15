@@ -7,11 +7,26 @@ This project is a clean reimplementation of a bunch of shell script wrappers and
 hacks that I keep needing in dev environments and CIs of Rust projects I work
 with.
 
+## Status
+
+This is primarily a private project that supports a couple of dev teams and
+our projects. But as long as this goal is not compromised, and I'm happy to
+support external users as well as I can.
+
+It's a direct rewrite of shell scripts that we've been using for more than a
+year now.
+
+If you're planning to use it, please expect some rough edges. The source code
+is small and simple.
+
 ## Installing
 
 This repo is a standard Rust project, with a Nix flake included. If you're thinking
 about using it, you should know how to handle it already.
 
+## Debugging
+
+Set `env RUST_LOG=cargo-deluxe=trace` for some basic logging.
 
 ## Setting up
 

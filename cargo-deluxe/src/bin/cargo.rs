@@ -79,7 +79,7 @@ fn main() -> Result<()> {
                         if let Some(val) = org_args_iter.next() {
                             new_args.push(val);
                         } else {
-                            warn!(target: LOG_TARGET, arg = %String::from_utf8_lossy(arg), "Did not find value for argument", );
+                            trace!(target: LOG_TARGET, arg = %String::from_utf8_lossy(arg), "Did not find value for argument");
                         }
                         continue;
                     } else if arg.is_empty() {

@@ -34,7 +34,10 @@ fn main() -> Result<()> {
                 if args.get(2).map(String::as_str) == Some("___") {
                     return Ok(());
                 }
-                bail!("Rust compilation denied, due to {DENY_ENV} being set");
+                bail!(
+                    "Rust compilation denied, due to {DENY_ENV} being set. Command was: `rustc {}`",
+                    args.join(" ")
+                );
             }
             Ok(())
         })?

@@ -26,7 +26,9 @@ fn main() -> Result<()> {
         let mut packages = vec![];
         let mut target_dir =
             env::var_os("CARGO_BUILD_TARGET_DIR").unwrap_or_else(|| OsString::from("target"));
-        let mut target = None;
+        let mut target =
+            env::var("CARGO_BUILD_TARGET").ok();
+
         let mut bins = vec![];
         let mut _subcmd = None;
 

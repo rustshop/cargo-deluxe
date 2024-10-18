@@ -23,11 +23,11 @@ fn main() -> Result<()> {
         let mut org_args_iter = org_args.clone().into_iter();
 
         let mut new_args = vec![];
-        let mut package = None;
+        let mut packages = vec![];
         let mut target_dir =
             env::var_os("CARGO_BUILD_TARGET_DIR").unwrap_or_else(|| OsString::from("target"));
         let mut target = None;
-        let mut bin = None;
+        let mut bins = vec![];
         let mut _subcmd = None;
 
         while let Some(arg_os_string) = org_args_iter.next() {
@@ -36,7 +36,7 @@ fn main() -> Result<()> {
                     let val = org_args_iter
                         .next()
                         .ok_or_eyre("Missing argument to {arg}")?;
-                    package = Some(val.clone());
+                    packages.push(val.clone());
                     new_args.push(arg_os_string);
                     new_args.push(val);
                 }
@@ -58,10 +58,7 @@ fn main() -> Result<()> {
                     let val = org_args_iter
                         .next()
                         .ok_or_eyre("Missing argument to {arg}")?;
-                    bin = Some(
-                        bin.map(|b| [b, val.clone()].join(&OsString::from("-")))
-                            .unwrap_or_else(|| val.clone()),
-                    );
+                    bins.push(val.clone());
                     new_args.push(arg_os_string);
                     new_args.push(val);
                 }
@@ -89,6 +86,9 @@ fn main() -> Result<()> {
             }
         }
 
+        packages.sort();
+        bins.sort();
+
         let target_underscores = match target {
             Some(t) => t,
             None => {
@@ -96,23 +96,22 @@ fn main() -> Result<()> {
             },
         }.replace('-', "_");
 
-        let new_target_dir = match (package, bin) {
-            (None, None) => target_dir,
-            (None, Some(bin)) => {
-                [target_dir, OsString::from("bin"), bin].join(&OsString::from("/"))
-            }
-            (Some(package), None) => {
-                [target_dir, OsString::from("package"), package].join(&OsString::from("/"))
-            }
-            (Some(package), Some(bin)) => [
-                target_dir,
-                OsString::from("package"),
-                package,
-                OsString::from("bin"),
-                bin,
-            ]
-            .join(&OsString::from("/")),
-        };
+        let new_target_dir =
+            if !packages.is_empty() {
+                [
+                    target_dir,
+                    OsString::from("pkg"),
+                    packages.join(&OsString::from("-"))
+                ].join(&OsString::from("/"))
+            } else if !bins.is_empty() {
+                [
+                    target_dir,
+                    OsString::from("bin"),
+                    bins.join(&OsString::from("-"))
+                ].join(&OsString::from("/"))
+            } else {
+                target_dir
+            };
 
         if let Some(env_names_to_sub) = env::var(CARGO_TARGET_SPECIFIC_ENVS_ENV).ok().as_ref().map(|envs| envs.split(',')) {
             for env_name_to_sub in env_names_to_sub {

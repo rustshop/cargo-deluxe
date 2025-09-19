@@ -4,7 +4,7 @@
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
     flake-utils.url = "github:numtide/flake-utils";
-    flakebox.url = "github:rustshop/flakebox";
+    flakebox.url = "github:rustshop/flakebox?rev=2f15f65d60c198fe49d849d68c2a2c95dc771ae5";
   };
 
   outputs =

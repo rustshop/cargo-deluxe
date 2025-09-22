@@ -31,6 +31,9 @@ fn main() -> Result<()> {
                 if args.get(0).map(String::as_str) == Some("-vV") {
                     return Ok(());
                 }
+                if args.get(0).map(String::as_str) == Some("--version") {
+                    return Ok(());
+                }
                 if args.get(2).map(String::as_str) == Some("___") {
                     return Ok(());
                 }

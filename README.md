@@ -40,19 +40,6 @@ for the implementation.
 
 ## Enhancements
 
-### Package and bin specific build target directories
-
-In teams working on larger projects, over and over we see users wasting a
-lot of time rebuilding large chunks of the Rust project, because they don't
-realize that every time they use `-p`, `--package` or `--bin`, the set of
-dependencies changes, which causes `cargo` to rebuild a lot of dependencies.
-
-`cargo-deluxe` will detect such invocations and seamlessly use separate
-build target directories for different combinations of them. This potentially
-leads to higher disk usage, but that's easier to reason and mitigate for
-most developers.
-
-
 ## `CARGO_DENY_BUILD` to avoid accidental re-compilations.
 
 In a sane and well-designed CI pipeline, one of the first steps is building the source

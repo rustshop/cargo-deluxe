@@ -98,23 +98,6 @@ fn main() -> Result<()> {
             },
         }.replace('-', "_");
 
-        let new_target_dir =
-            if !packages.is_empty() {
-                [
-                    target_dir,
-                    OsString::from("pkg"),
-                    packages.join(&OsString::from("-"))
-                ].join(&OsString::from("/"))
-            } else if !bins.is_empty() {
-                [
-                    target_dir,
-                    OsString::from("bin"),
-                    bins.join(&OsString::from("-"))
-                ].join(&OsString::from("/"))
-            } else {
-                target_dir
-            };
-
         if let Some(env_names_to_sub) = env::var(CARGO_TARGET_SPECIFIC_ENVS_ENV).ok().as_ref().map(|envs| envs.split(',')) {
             for env_name_to_sub in env_names_to_sub {
                 let env_name_src = env_name_to_sub.replace("target", &target_underscores);
@@ -150,10 +133,10 @@ fn main() -> Result<()> {
             target: LOG_TARGET,
             args=?new_args,
             ?target_underscores,
-            target_dir=%String::from_utf8_lossy(new_target_dir.as_bytes()),
+            target_dir=%String::from_utf8_lossy(target_dir.as_bytes()),
             "Calling next command");
         cargo_cmd.args(new_args);
-        cargo_cmd.env("CARGO_BUILD_TARGET_DIR", new_target_dir);
+        cargo_cmd.env("CARGO_BUILD_TARGET_DIR", target_dir);
         Ok(())
     })?.exec();
 
